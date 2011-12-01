@@ -36,6 +36,7 @@ namespace SimpleMvp
 
       var details = _views.Create<IDetailView>(new {article = article});
       _views.ShowDialog(details, _view);
+      _views.Release(details);
     }
 
     public void Dispose()

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -18,6 +16,7 @@ namespace SimpleMvp
       var container = new WindsorContainer();
       container.Register(new IRegistration[]
                          {
+                           Component.For<IWindsorContainer>().Instance(container),
                            Component.For<IArticleRepository>().ImplementedBy<ArticleRepository>(),
                            Component.For<IViewFactory>().ImplementedBy<ViewFactory>(),
                            Component.For<IMainFormView>().ImplementedBy<MainForm>().LifestyleTransient(),
