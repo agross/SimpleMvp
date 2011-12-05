@@ -7,23 +7,18 @@ namespace SimpleMvp
 {
   public partial class MainForm : Form, IMainFormView
   {
-    private IPresenter<IMainFormView> _presenter;
+    private readonly IPresenter<IMainFormView> _presenter;
 
     public MainForm()
     {
       InitializeComponent();
-      if (!DesignMode)
-      {
-        _presenter = IoC.Resolve<IPresenter<IMainFormView>>(new {view = this});
-      }
-    }
-    
-    protected override void OnFormClosed(FormClosedEventArgs e)
-    {
-      IoC.Release(_presenter);
-      base.OnFormClosed(e);
     }
 
+    public MainForm(IPresenter<IMainFormView> presenter) : this()
+    {
+      _presenter = presenter;
+    }
+    
     public void ShowArticles(IEnumerable<string> articles)
     {
       lbxArticles.Items.Clear();

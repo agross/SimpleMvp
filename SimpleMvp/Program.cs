@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -31,13 +33,21 @@ namespace SimpleMvp
                              .Where(t => t.Name.EndsWith("Form"))
                              .WithService.Select((type, baseTypes) => type.GetInterfaces().Where(x => x.Name != "IView" && x.Name.EndsWith("View")))
                              .LifestyleTransient()
+                             .Configure(r => r.Activator<ViewActivator>())
                          });
 
       IoC.SetContainer(container);
 
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new MainForm());
+
+      var viewFactory = container.Resolve<IViewFactory>();
+      var mainForm = viewFactory.Create<IMainFormView>(null);
+      viewFactory.ShowDialog(mainForm, null);
+      
+      Application.Run();
+
+      viewFactory.Release(mainForm);
     }
   }
 }

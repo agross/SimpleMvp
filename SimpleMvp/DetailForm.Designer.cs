@@ -60,6 +60,7 @@
       this.Controls.Add(this.btnClose);
       this.Name = "DetailForm";
       this.Text = "DetailForm";
+      this.Load += new System.EventHandler(this.DetailForm_Load);
       this.ResumeLayout(false);
       this.PerformLayout();
 

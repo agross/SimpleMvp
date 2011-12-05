@@ -4,22 +4,25 @@ namespace SimpleMvp
 {
   internal class DetailFormPresenter : IPresenter<IDetailView>
   {
-    private readonly IDetailView _view;
     private readonly IArticleRepository _articles;
+    private IDetailView _view;
 
-    public DetailFormPresenter(IDetailView view, IArticleRepository articles, string article)
+    public DetailFormPresenter(IArticleRepository articles)
     {
-      _view = view;
       _articles = articles;
-
-      _view.ShowDetails(article);
-
-      _view.CloseClick +=View_CloseClick;
     }
 
     private void View_CloseClick(object sender, EventArgs eventArgs)
     {
       _view.Close();
+    }
+
+    public void AttachTo(IDetailView view)
+    {
+      _view = view;
+
+      _view.CloseClick += View_CloseClick;
+      _view.RequestShowArticle += (sender, args) => _view.ShowDetails(args.Article);
     }
 
     public void Dispose()

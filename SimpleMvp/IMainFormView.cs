@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace SimpleMvp
 {
-  public interface IMainFormView
+  public interface IMainFormView : IView
   {
     void ShowArticles(IEnumerable<string> articles);
     event EventHandler DetailsClick;

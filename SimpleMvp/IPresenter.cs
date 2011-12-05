@@ -2,7 +2,8 @@ using System;
 
 namespace SimpleMvp
 {
-  internal interface IPresenter<TForm> : IDisposable
+  public interface IPresenter<TView> : IDisposable
   {
+    void AttachTo(TView view);
   }
 }

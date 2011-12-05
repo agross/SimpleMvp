@@ -3,15 +3,21 @@ using System.Windows.Forms;
 
 namespace SimpleMvp
 {
-  internal interface IView
+  public interface IView
   {
     DialogResult ShowDialog(IWin32Window parent);
   }
 
-  internal interface IDetailView : IView
+  public interface IDetailView : IView
   {
     event EventHandler CloseClick;
     void Close();
     void ShowDetails(string article);
+    event EventHandler<ArticleEventArgs> RequestShowArticle;
+  }
+
+  public class ArticleEventArgs : EventArgs
+  {
+    public string Article { get; set; }
   }
 }
