@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
@@ -19,10 +20,17 @@ namespace SimpleMvp
                            Component.For<IWindsorContainer>().Instance(container),
                            Component.For<IArticleRepository>().ImplementedBy<ArticleRepository>(),
                            Component.For<IViewFactory>().ImplementedBy<ViewFactory>(),
-                           Component.For<IMainFormView>().ImplementedBy<MainForm>().LifestyleTransient(),
-                           Component.For<IDetailView>().ImplementedBy<DetailForm>().LifestyleTransient(),
-                           Component.For<IPresenter<IMainFormView>>().ImplementedBy<MainFormPresenter>().LifestyleTransient(),
-                           Component.For<IPresenter<IDetailView>>().ImplementedBy<DetailFormPresenter>().LifestyleTransient()
+                           AllTypes
+                             .FromThisAssembly()
+                             .IncludeNonPublicTypes()
+                             .BasedOn(typeof(IPresenter<>))
+                             .WithService.FromInterface()
+                             .LifestyleTransient(),
+                           AllTypes
+                             .FromThisAssembly()
+                             .Where(t => t.Name.EndsWith("Form"))
+                             .WithService.Select((type, baseTypes) => type.GetInterfaces().Where(x => x.Name != "IView" && x.Name.EndsWith("View")))
+                             .LifestyleTransient()
                          });
 
       IoC.SetContainer(container);
