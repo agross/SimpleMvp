@@ -35,10 +35,7 @@ namespace SimpleMvp
 
     private void btnClose_Click(object sender, EventArgs e)
     {
-      if (CloseClick != null)
-      {
-        CloseClick(this, e);
-      }
+      Raise.Event(CloseClick, this);
     }
   }
 }

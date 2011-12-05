@@ -40,18 +40,12 @@ namespace SimpleMvp
 
     private void btnDetails_Click(object sender, EventArgs e)
     {
-      if (DetailsClick != null)
-      {
-        DetailsClick(this, e);
-      }
+      Raise.Event(DetailsClick, this);
     }
 
     private void btnClose_Click(object sender, EventArgs e)
     {
-      if (CloseClick != null)
-      {
-        CloseClick(this, e);
-      }
+      Raise.Event(CloseClick, this);
     }
 
     private void lbxArticles_DoubleClick(object sender, EventArgs e)
